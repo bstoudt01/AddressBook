@@ -44,7 +44,7 @@ namespace AddressBook
             NSSAddressBook.AddContact(juan);
 
             // Try to addd a contact a second time
-            // NSSAddressBook.AddContact(sue);
+            NSSAddressBook.AddContact(sue);
 
             // Create a list of emails that match our Contacts
             List<string> emails = new List<string>()
@@ -55,7 +55,7 @@ namespace AddressBook
             };
 
             // Insert an email that does NOT match a Contact
-            // emails.Insert(1, "not.in.addressbook@email.com");
+            emails.Insert(1, "not.in.addressbook@email.com");
 
             //Search the AddressBook by email and print the information about each Contact
             foreach (string email in emails)
@@ -71,14 +71,7 @@ namespace AddressBook
     }
     public class AddressBook
     {
-        //        private Dictionary<string, Contact> _contacts;
         private Dictionary<string, Contact> _contacts { get; set; }
-        // private List<Emails> _emails { get; set; }
-        // // public string Name {get; set;}
-        // // public List<string> Contact {get; set;}
-        // public void Emails() {
-
-        // } 
 
         public AddressBook()
         {
@@ -88,14 +81,28 @@ namespace AddressBook
         }
         public void AddContact(Contact aContact)
         {
-            _contacts.Add(aContact.Email, aContact);
+            try
+            {
+                _contacts.Add(aContact.Email, aContact);
+            }
+            catch
+            {
+                Console.WriteLine($"The Contact '{aContact.Email}' already exists");
+            }
 
         }
 
-        public Contact GetByEmail(string Email)
+        public Contact GetByEmail(string email)
         {
-            // Use the square bracket notation to get the _contact from the dictionary
-            Contact email = _contacts[Email];
+            Contact result = new Contact();
+            foreach (KeyValuePair<string, Contact> item in _contacts)
+            {
+                if (item.Key == email)
+                {
+                    result = item.Value;
+                }
+            }
+            return result;
 
         }
 
